@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class SubscribeSerializer(UserSerializer):
-    """Serializer for subscriptions."""
+    """Serializer for  subscriptions."""
 
     recipes_count = serializers.ReadOnlyField(source='recipes.count')
     recipes = serializers.SerializerMethodField()
