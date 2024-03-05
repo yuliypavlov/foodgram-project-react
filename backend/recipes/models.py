@@ -11,7 +11,7 @@ models.CharField.register_lookup(Length)
 
 
 class Ingredient(models.Model):
-    """Ingredient abstract model."""
+    """Ingredient model."""
 
     name = models.CharField(
         verbose_name='Ингридиент',
@@ -38,7 +38,7 @@ class Ingredient(models.Model):
 
 
 class Tag(models.Model):
-    """Tag abstract model."""
+    """Tag model."""
 
     name = models.CharField(
         verbose_name='Название тeга',
@@ -68,7 +68,7 @@ class Tag(models.Model):
 
 
 class Recipe(models.Model):
-    """Recipe abstract model."""
+    """Recipe model."""
 
     name = models.CharField(
         verbose_name='Название',

@@ -36,14 +36,14 @@ class UserViewSet(UserViewSet):
     pagination_class = CustomPagination
 
     def get_permissions(self):
-        if self.action == 'me':
+        if self.action == ['me', 'subscribe', 'delete_subscribe',
+                           'subscriptions']:
             return [IsAuthenticated()]
         return super().get_permissions()
 
     @action(
         methods=['post'],
         detail=True,
-        permission_classes=[permissions.IsAuthenticated]
     )
     def subscribe(self, request, id=None):
         serializer = SubscribeCreateSerializer(
@@ -63,7 +63,6 @@ class UserViewSet(UserViewSet):
     @action(
         methods=['get'],
         detail=False,
-        permission_classes=[permissions.IsAuthenticated]
     )
     def subscriptions(self, request):
         subscriptions = User.objects.filter(
