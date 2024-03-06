@@ -62,16 +62,16 @@ class SubscribeCreateSerializer(serializers.ModelSerializer):
         fields = ('user', 'author')
 
     def validate(self, data):
-        author_id = data.get('author').id
-        user_id = data.get('user').id
-        if user_id == author_id:
+        author = data.get('author')
+        user = data.get('user')
+        if user == author:
             raise serializers.ValidationError(
                 detail='Нельзя подписаться на себя',
                 code=status.HTTP_400_BAD_REQUEST
             )
         if Subscription.objects.filter(
-                author=author_id,
-                user=user_id).exists():
+                author=author,
+                user=user).exists():
             raise serializers.ValidationError(
                 detail='Вы уже подписались',
                 code=status.HTTP_400_BAD_REQUEST
@@ -283,16 +283,16 @@ class RecipeShortSerializer(serializers.ModelSerializer):
 
 
 class UserRecipeRelationSerializer(serializers.ModelSerializer):
-    """Abstract sterilizer for favorites and shopping list."""
+    """Abstract serilizer for favorites and shopping list."""
 
     class Meta:
-        model = User
         fields = ('user', 'recipe')
 
     def validate(self, data):
         user_id = data.get('user').id
         recipe_id = data.get('recipe').id
-        if User.objects.filter(user=user_id, recipe=recipe_id).exists():
+        if self.Meta.model.objects.filter(user=user_id,
+                                          recipe=recipe_id).exists():
             raise serializers.ValidationError('Рецепт уже был добавлен')
         return data
 
