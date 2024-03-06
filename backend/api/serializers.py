@@ -220,7 +220,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                 detail='Должны быть теги',
                 code=status.HTTP_400_BAD_REQUEST
             )
-        if bool(set(tags)):
+        if len(set(tags)) != len(tags):
             raise serializers.ValidationError(
                 detail='Теги не должны повторяться',
                 code=status.HTTP_400_BAD_REQUEST
