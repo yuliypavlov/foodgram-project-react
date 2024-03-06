@@ -4,7 +4,7 @@ from rest_framework import serializers, status
 
 from recipes.constants import MAX_AMOUNT, MIN_AMOUNT
 from recipes.models import (AmountIngredient, Favorite, Ingredient,
-                            Recipe, ShoppingCart, Tag, UserRecipeRelation)
+                            Recipe, ShoppingCart, Tag)
 from users.models import Subscription, User
 
 
@@ -286,14 +286,13 @@ class UserRecipeRelationSerializer(serializers.ModelSerializer):
     """Abstract sterilizer for favorites and shopping list."""
 
     class Meta:
-        model = UserRecipeRelation
+        model = User
         fields = ('user', 'recipe')
 
     def validate(self, data):
         user_id = data.get('user').id
         recipe_id = data.get('recipe').id
-        if UserRecipeRelation.objects.filter(user=user_id,
-                                             recipe=recipe_id).exists():
+        if User.objects.filter(user=user_id, recipe=recipe_id).exists():
             raise serializers.ValidationError('Рецепт уже был добавлен')
         return data
 
