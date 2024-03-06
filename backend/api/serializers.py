@@ -62,16 +62,16 @@ class SubscribeCreateSerializer(serializers.ModelSerializer):
         fields = ('user', 'author')
 
     def validate(self, data):
-        author = data.get('author')
-        user = data.get('user')
-        if user == author:
+        author_id = data.get('author').id
+        user_id = data.get('user').id
+        if user_id == author_id:
             raise serializers.ValidationError(
                 detail='Нельзя подписаться на себя',
                 code=status.HTTP_400_BAD_REQUEST
             )
         if Subscription.objects.filter(
-                author=author.id,
-                user=user.id).exists():
+                author=author_id,
+                user=user_id).exists():
             raise serializers.ValidationError(
                 detail='Вы уже подписались',
                 code=status.HTTP_400_BAD_REQUEST
