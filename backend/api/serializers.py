@@ -209,11 +209,13 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
-        if not data.get('image'):
-            raise serializers.ValidationError(
-                detail='Должно быть изображение',
-                code=status.HTTP_400_BAD_REQUEST
-            )
+        instance = self.instance
+        if not instance or not instance.image:
+            if not data.get('image'):
+                raise serializers.ValidationError(
+                    detail='Должно быть изображение',
+                    code=status.HTTP_400_BAD_REQUEST
+                )
         tags = data.get('tags')
         if not tags:
             raise serializers.ValidationError(
@@ -283,7 +285,7 @@ class RecipeShortSerializer(serializers.ModelSerializer):
 
 
 class UserRecipeRelationSerializer(serializers.ModelSerializer):
-    """Abstract serilizer for favorites and shopping list."""
+    """Common serializer for favorites and shopping list."""
 
     class Meta:
         fields = ('user', 'recipe')
